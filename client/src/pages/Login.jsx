@@ -44,13 +44,15 @@ export default function Login() {
     const handleLogin = (e) => {
         e.preventDefault();
         setErrorMessage("");
+
         Axios.post("http://localhost:5001/login", {
             email: email,
             password: password,
         })
             .then((result) => {
                 console.log(result);
-                if (result.data === "Login success") {
+                if (result.data.message === "Login success") {
+                    localStorage.setItem("userId", result.data.userId);
                     navigate("/dashboard");
                 }
             })

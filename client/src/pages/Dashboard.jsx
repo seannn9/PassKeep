@@ -12,14 +12,22 @@ function Dashboard() {
     const [loadingPasswords, setLoadingPasswords] = useState({});
 
     useEffect(() => {
-        Axios.get(`http://localhost:5001/showpasswords/`).then((response) => {
-            setPasswordList(response.data);
-        });
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+            Axios.get(`http://localhost:5001/showpasswords/${userId}`).then(
+                (response) => {
+                    setPasswordList(response.data);
+                }
+            );
+        }
     }, [refresh]);
 
     const addPassword = (e) => {
         e.preventDefault();
+        const userId = localStorage.getItem("userId");
+
         Axios.post("http://localhost:5001/addpassword", {
+            userId: userId,
             email: email,
             password: password,
             website: website,
