@@ -84,6 +84,12 @@ function Dashboard() {
 
     return (
         <div className="main-container">
+            <nav className="sidebar">
+                <h1>PassKeep</h1>
+                <p>Home</p>
+                <p>Dashboard</p>
+                <p>Logout</p>
+            </nav>
             <div className="form-container">
                 <form onSubmit={addPassword}>
                     <input
@@ -113,11 +119,7 @@ function Dashboard() {
 
             <div className="password-list">
                 {passwordList.map((pwd, key) => (
-                    <div
-                        key={key}
-                        onClick={() => togglePasswordVisibility(pwd)}
-                        className="password-item"
-                    >
+                    <div key={key} className="password-item">
                         {pwd.website_name}:{" "}
                         {loadingPasswords[pwd.id] ? (
                             <span>Loading...</span>
@@ -126,6 +128,9 @@ function Dashboard() {
                         ) : (
                             "********"
                         )}
+                        <div onClick={() => togglePasswordVisibility(pwd)}>
+                            reveal
+                        </div>
                     </div>
                 ))}
             </div>

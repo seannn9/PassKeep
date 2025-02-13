@@ -9,22 +9,46 @@ body {
 }
 
 .main-container {
-    min-height: 100%;
+    height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+    position: relative;
+    gap: 10px;
+}
+
+.sidebar {
+    position: absolute;
+    left: 0;
+    background-color: #0088ff;
+    color: white;
+    height: 100%;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    padding: 3em 0;
+}
+
+.sidebar p {
+    padding: 1em;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sidebar p:hover {
+    background-color: #06579e;
 }
 
 .form-container {
-    background-color: lightblue;
-    border-radius: 20px;
+    background-color: #0088ff;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 300px;
-    width: 60%;
+    width: 40%;
     padding: 1em 2em;
 }
 
@@ -52,7 +76,10 @@ form {
 }
 
 .password-list div {
-    background-color: black;
+    background-color: #0088ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: white;
     padding: 0.5em;
     margin: 1em;
