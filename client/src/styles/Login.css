@@ -1,0 +1,133 @@
+.login-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.login-section {
+    min-width: 50%;
+    background-color: white;
+    display: flex;
+    flex-shrink: 1;
+    flex-grow: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form {
+    margin: 0 1em;
+}
+
+.heroimg-section {
+    flex-shrink: 0;
+    flex-grow: 1;
+    flex-basis: 0px;
+    max-width: 50%;
+    min-width: 0px;
+    height: 100vh;
+}
+
+.heroimg-section img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.label {
+    text-align: center;
+}
+
+.label h1 {
+    font-size: 2em;
+}
+
+.label h1 a {
+    color: #0088ff;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.label h1 a:hover {
+    color: #06579e;
+}
+
+.label p {
+    color: #979494;
+}
+
+form {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+form input {
+    font-size: 16px;
+    width: 100%;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid #bababa;
+    padding: 0.5em;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+}
+
+form input:focus {
+    border: 1px solid #0088ff;
+    outline: none;
+}
+
+form button {
+    background-color: #0088ff;
+    border: 1px solid #0088ff;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 0.5em;
+}
+
+form button:hover {
+    background-color: white;
+    color: #0088ff;
+}
+
+form p {
+    text-align: center;
+    color: #979494;
+}
+
+form p span {
+    cursor: pointer;
+    color: #0088ff;
+    transition: all 0.2s;
+}
+
+form p span:hover {
+    color: #06579e;
+}
+
+@media (max-width: 769px) {
+    .login-container {
+        justify-content: center;
+        align-items: center;
+        background-image: url("../images/hero.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .login-section {
+        width: 480px;
+        height: 520px;
+        margin: 0 1em;
+        border-radius: 20px;
+    }
+
+    .heroimg-section {
+        display: none;
+    }
+}

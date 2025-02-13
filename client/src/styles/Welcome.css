@@ -1,0 +1,67 @@
+.welcome-wrapper {
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+.welcome-container {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    text-align: center;
+}
+
+.welcome-container h1 {
+    font-size: 3em;
+}
+
+.welcome-container p {
+    color: #979494;
+}
+
+.navbar {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2em 5em;
+    flex-wrap: wrap;
+}
+
+.brand {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.login-btn,
+.goto-features {
+    border: 1px solid #0088ff;
+    border-radius: 30px;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.login-btn {
+    color: #0088ff;
+}
+
+.goto-features {
+    color: white;
+    background-color: #0088ff;
+    font-size: 1em;
+}
+
+.login-btn:hover {
+    color: white;
+    background-color: #0088ff;
+}
+
+.goto-features:hover {
+    color: #0088ff;
+    background-color: white;
+}
