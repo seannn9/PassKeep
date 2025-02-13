@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import "../styles/App.css";
+import "../styles/Dashboard.css";
 
 function Dashboard() {
     const [website, setWebsite] = useState("");
