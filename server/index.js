@@ -17,12 +17,12 @@ const db = mysql.createConnection({
 });
 
 app.post("/addpassword", (req, res) => {
-    const { email, password, website } = req.body;
+    const { userId, email, password, website } = req.body;
     const encryptedPass = encrypt(password);
 
     db.query(
-        "INSERT INTO passwords (password, website_name, email, iv) VALUES (?,?,?,?)",
-        [encryptedPass.password, website, email, encryptedPass.iv],
+        "INSERT INTO passwords (password, website_name, email, iv, userId) VALUES (?,?,?,?,?)",
+        [encryptedPass.password, website, email, encryptedPass.iv, userId],
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -33,15 +33,19 @@ app.post("/addpassword", (req, res) => {
     );
 });
 
-app.get("/showpasswords/", (req, res) => {
-    const user_id = req.params.user_id;
-    db.query("SELECT * FROM passwords", (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
+app.get("/showpasswords/:userId", (req, res) => {
+    const userId = req.params.userId;
+    db.query(
+        "SELECT * FROM passwords WHERE userId = ?",
+        [userId],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send(result);
+            }
         }
-    });
+    );
 });
 
 app.post("/decryptpassword", (req, res) => {
@@ -85,7 +89,7 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
     const { email, password } = req.body;
     db.query(
-        "SELECT master_password from users WHERE email = ?",
+        "SELECT userId, master_password from users WHERE email = ?",
         [email],
         async (err, results) => {
             if (err) {
@@ -103,7 +107,10 @@ app.post("/login", (req, res) => {
                 results[0].master_password
             );
             if (passwordMatch) {
-                res.send("Login success");
+                res.json({
+                    message: "Login success",
+                    userId: results[0].userId,
+                });
             } else {
                 res.status(400).send("Invalid password");
             }
