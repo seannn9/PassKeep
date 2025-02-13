@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import "../styles/Login.css";
@@ -11,6 +11,13 @@ export default function Login() {
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+            navigate("/dashboard"); // if user is already logged in, they cannot go back to login page until they log out
+        }
+    }, []);
+
     const changeLoginState = () => {
         setEmail("");
         setPassword("");
@@ -20,6 +27,18 @@ export default function Login() {
     const register = (e) => {
         e.preventDefault();
         setErrorMessage("");
+
+        if (!email || !password) {
+            setErrorMessage("Please fill in both fields.");
+            return;
+        } else {
+            const form = e.target.closest("form");
+            if (!form.checkValidity()) {
+                setErrorMessage("Please use a valid email address.");
+                return;
+            }
+        }
+
         Axios.post("http://localhost:5001/register", {
             email: email,
             password: password,
@@ -44,6 +63,11 @@ export default function Login() {
     const handleLogin = (e) => {
         e.preventDefault();
         setErrorMessage("");
+
+        if (!email || !password) {
+            setErrorMessage("Please fill in both fields.");
+            return;
+        }
 
         Axios.post("http://localhost:5001/login", {
             email: email,
@@ -87,7 +111,6 @@ export default function Login() {
                             placeholder="Enter your email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value.trim())}
-                            required
                         />
                         <label htmlFor="password">Password</label>
                         <input
@@ -96,7 +119,6 @@ export default function Login() {
                             placeholder="Enter your password"
                             value={password.trim()}
                             onChange={(e) => setPassword(e.target.value)}
-                            required
                         />
 
                         {errorMessage && (

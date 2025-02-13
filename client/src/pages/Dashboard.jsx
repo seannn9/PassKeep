@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import "../styles/App.css";
 
@@ -11,6 +12,8 @@ function Dashboard() {
     const [isPasswordVisible, setIsPasswordVisible] = useState({});
     const [loadingPasswords, setLoadingPasswords] = useState({});
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const userId = localStorage.getItem("userId");
         if (userId) {
@@ -19,6 +22,8 @@ function Dashboard() {
                     setPasswordList(response.data);
                 }
             );
+        } else {
+            navigate("/login"); // if user is not logged in, they cannot redirect to dashboard until they login
         }
     }, [refresh]);
 
@@ -82,13 +87,18 @@ function Dashboard() {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.clear(); // clear userId to logout
+        navigate("/");
+    };
+
     return (
         <div className="main-container">
             <nav className="sidebar">
                 <h1>PassKeep</h1>
                 <p>Home</p>
                 <p>Dashboard</p>
-                <p>Logout</p>
+                <p onClick={handleLogout}>Logout</p>
             </nav>
             <div className="form-container">
                 <form onSubmit={addPassword}>
@@ -117,10 +127,13 @@ function Dashboard() {
                 </form>
             </div>
 
-            <div className="password-list">
+            <div className="password-list" style={{ textAlign: "left" }}>
                 {passwordList.map((pwd, key) => (
                     <div key={key} className="password-item">
-                        {pwd.website_name}:{" "}
+                        Website: {pwd.website_name}
+                        <br /> Email: {pwd.email}
+                        <br />
+                        Password:
                         {loadingPasswords[pwd.id] ? (
                             <span>Loading...</span>
                         ) : isPasswordVisible[pwd.id] ? (
@@ -128,7 +141,13 @@ function Dashboard() {
                         ) : (
                             "********"
                         )}
-                        <div onClick={() => togglePasswordVisibility(pwd)}>
+                        <div
+                            onClick={() => togglePasswordVisibility(pwd)}
+                            style={{
+                                backgroundColor: "black",
+                                color: "white",
+                            }}
+                        >
                             reveal
                         </div>
                     </div>
