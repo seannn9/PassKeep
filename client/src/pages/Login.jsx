@@ -122,9 +122,7 @@ export default function Login() {
                         />
 
                         {errorMessage && (
-                            <p style={{ color: "red", marginBottom: "10px" }}>
-                                {errorMessage}
-                            </p>
+                            <p style={{ color: "red" }}>{errorMessage}</p>
                         )}
 
                         {loginState === "Login" ? (
