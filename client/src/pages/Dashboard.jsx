@@ -165,7 +165,7 @@ function Dashboard() {
                     </div>
                 )}
                 <div className="passwords">
-                    <h1>Passwords</h1>
+                    <h2 style={{ marginBottom: "5px" }}>Passwords</h2>
                     <div
                         className="password-list"
                         style={{ textAlign: "left" }}
