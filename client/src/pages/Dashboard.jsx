@@ -122,6 +122,15 @@ function Dashboard() {
             <div className="content-section">
                 {isAdding && (
                     <div className="add-password">
+                        <div
+                            className="exit-adding"
+                            onClick={() => setIsAdding(false)}
+                        >
+                            <FontAwesomeIcon
+                                icon="fa-solid fa-circle-xmark"
+                                style={{ height: "32px" }}
+                            />
+                        </div>
                         <div className="form-container">
                             <h2 style={{ textAlign: "center" }}>
                                 Add Password
