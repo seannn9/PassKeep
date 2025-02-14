@@ -1,11 +1,15 @@
 import "../styles/Welcome.css";
 import { Link } from "react-router-dom";
+import favicon from "../images/favicon32.png";
 
 export default function Welcome() {
     return (
         <div className="welcome-wrapper">
             <nav className="navbar">
-                <div className="brand">PassKeep</div>
+                <div className="brand">
+                    <img src={favicon} alt="PK"></img>
+                    PassKeep
+                </div>
                 <Link to="/login" className="login-btn">
                     Login
                 </Link>
