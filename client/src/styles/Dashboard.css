@@ -1,20 +1,27 @@
 .main-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    position: relative;
-    gap: 10px;
 }
 
 .sidebar {
-    position: absolute;
-    left: 0;
+    grid-area: 1 / 1 / 2 / 2;
+}
+.form-container {
+    grid-area: 1 / 2 / 2 / 3;
+}
+.password-list {
+    grid-area: 1 / 3 / 2 / 4;
+}
+
+.sidebar {
+    text-align: center;
     background-color: #0088ff;
     color: white;
-    height: 100%;
-    width: 250px;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     gap: 2em;
@@ -33,30 +40,13 @@
 }
 
 .form-container {
-    background-color: #0088ff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 300px;
-    width: 40%;
-    padding: 1em 2em;
+    margin-left: 1em;
+    padding: 2em;
+    border: 3px solid #0088ff;
 }
 
 .form-container input {
-    height: 40px;
-    width: 300px;
-    border-radius: 8px;
-    border: none;
-    font-size: 16px;
-    padding: 1em;
-    outline: none;
-}
-
-.form-container button {
-    height: 40px;
-    border-radius: 8px;
-    border: 1px solid black;
-    cursor: pointer;
+    width: 100%;
 }
 
 .password-list div {

@@ -96,11 +96,12 @@ function Dashboard() {
         <div className="main-container">
             <nav className="sidebar">
                 <h1>PassKeep</h1>
-                <p>Home</p>
+                <p onClick={() => navigate("/")}>Home</p>
                 <p>Dashboard</p>
                 <p onClick={handleLogout}>Logout</p>
             </nav>
             <div className="form-container">
+                <h1 style={{ textAlign: "center" }}>Add A Password</h1>
                 <form onSubmit={addPassword}>
                     <input
                         value={website.trimStart()}
