@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import "../styles/Dashboard.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import favicon from "../images/favicon32.png";
 
 function Dashboard() {
     const [website, setWebsite] = useState("");
@@ -11,6 +13,7 @@ function Dashboard() {
     const [refresh, setRefresh] = useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = useState({});
     const [loadingPasswords, setLoadingPasswords] = useState({});
+    const [isAdding, setIsAdding] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
 
     const navigate = useNavigate();
@@ -104,76 +107,110 @@ function Dashboard() {
     return (
         <div className="main-container">
             <nav className="sidebar">
-                <h1>PassKeep</h1>
+                <h1>
+                    <img src={favicon} alt="PK" />
+                    PassKeep
+                </h1>
+                <button onClick={() => setIsAdding(!isAdding)}>
+                    + Add Password
+                </button>
                 <p onClick={() => navigate("/")}>Home</p>
                 <p>Dashboard</p>
                 <p onClick={handleLogout}>Logout</p>
             </nav>
-            <div className="form-container">
-                <h1 style={{ textAlign: "center" }}>Add A Password</h1>
-                <form onSubmit={addPassword}>
-                    <input
-                        value={website.trimStart()}
-                        onChange={(e) => setWebsite(e.target.value)}
-                        type="text"
-                        required
-                        placeholder="Enter website name"
-                    />
-                    <input
-                        value={email.trimStart()}
-                        onChange={(e) => setEmail(e.target.value)}
-                        type="email"
-                        required
-                        placeholder="Enter your email"
-                    />
-                    <input
-                        value={password.trimStart()}
-                        onChange={(e) => setPassword(e.target.value)}
-                        type="password"
-                        required
-                        placeholder="Enter your password"
-                    />
-                    <button type="submit">Add Password</button>
-                </form>
-            </div>
 
-            <div className="password-list" style={{ textAlign: "left" }}>
-                {passwordList.map((pwd, key) => (
-                    <div key={key} className="password-item">
-                        Website: {pwd.website_name}
-                        <br /> Email: {pwd.email}
-                        <br />
-                        Password:
-                        {loadingPasswords[pwd.id] ? (
-                            <span>Loading...</span>
-                        ) : isPasswordVisible[pwd.id] ? (
-                            isPasswordVisible[pwd.id] // will show decrypted password if it exists
-                        ) : (
-                            "********"
-                        )}
-                        <div className="actions" style={{ textAlign: "left" }}>
-                            <div
-                                onClick={() => togglePasswordVisibility(pwd)}
-                                style={{
-                                    backgroundColor: "black",
-                                    color: "white",
-                                }}
-                            >
-                                reveal
-                            </div>
-                            <div>edit</div>
-                            <div
-                                onClick={() => deletePassword(pwd.id)}
-                                style={{
-                                    backgroundColor: "black",
-                                    color: "white",
-                                }}
-                            >
-                                delete
-                            </div>
+            <div className="content-section">
+                {isAdding && (
+                    <div className="add-password">
+                        <div className="form-container">
+                            <h2 style={{ textAlign: "center" }}>
+                                Add Password
+                            </h2>
+                            <form onSubmit={addPassword}>
+                                <input
+                                    value={website.trimStart()}
+                                    onChange={(e) => setWebsite(e.target.value)}
+                                    type="text"
+                                    required
+                                    placeholder="Enter website name"
+                                />
+                                <input
+                                    value={email.trimStart()}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    type="email"
+                                    required
+                                    placeholder="Enter your email"
+                                />
+                                <input
+                                    value={password.trimStart()}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
+                                    type="password"
+                                    required
+                                    placeholder="Enter your password"
+                                />
+                                <button type="submit">Add Password</button>
+                            </form>
                         </div>
                     </div>
-                ))}
+                )}
+                <div className="passwords">
+                    <h1>Passwords</h1>
+                    <div
+                        className="password-list"
+                        style={{ textAlign: "left" }}
+                    >
+                        {passwordList.map((pwd, key) => (
+                            <div key={key} className="password-item">
+                                <h3 className="website-name">
+                                    {pwd.website_name}
+                                </h3>
+                                <div className="email">
+                                    <FontAwesomeIcon icon="fa-solid fa-envelope" />
+                                    <div style={{ overflow: "auto" }}>
+                                        {pwd.email}
+                                    </div>
+                                </div>
+                                <div
+                                    className="password"
+                                    onClick={() =>
+                                        togglePasswordVisibility(pwd)
+                                    }
+                                >
+                                    <FontAwesomeIcon icon="fa-solid fa-key" />
+                                    {loadingPasswords[pwd.id] ? (
+                                        <span>Loading...</span>
+                                    ) : isPasswordVisible[pwd.id] ? (
+                                        isPasswordVisible[pwd.id] // will show decrypted password if it exists
+                                    ) : (
+                                        "********"
+                                    )}
+                                </div>
+                                <div
+                                    className="actions"
+                                    style={{ textAlign: "left" }}
+                                >
+                                    <div
+                                        onClick={() => deletePassword(pwd.id)}
+                                        className="delete-btn"
+                                    >
+                                        <FontAwesomeIcon
+                                            icon="fa-solid fa-trash"
+                                            style={{ height: "20px" }}
+                                        />
+                                    </div>
+                                    <div className="edit-btn">
+                                        <FontAwesomeIcon
+                                            icon="fa-solid fa-pen-to-square"
+                                            style={{ height: "20px" }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );
