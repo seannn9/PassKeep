@@ -11,6 +11,7 @@ function Dashboard() {
     const [refresh, setRefresh] = useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = useState({});
     const [loadingPasswords, setLoadingPasswords] = useState({});
+    const [isUpdating, setIsUpdating] = useState(false);
 
     const navigate = useNavigate();
 
@@ -23,7 +24,7 @@ function Dashboard() {
                 }
             );
         } else {
-            navigate("/login"); // if user is not logged in, they cannot redirect to dashboard until they login
+            navigate("/login"); // if user isn't logged in, they can't redirect to dashboard until they login
         }
     }, [refresh]);
 
@@ -47,31 +48,39 @@ function Dashboard() {
             });
     };
 
-    const decryptPassword = (encryption) => {
+    const deletePassword = (id) => {
+        Axios.post("http://localhost:5001/deletepassword", {
+            id: id,
+        }).then(() => {
+            setRefresh(!refresh);
+        });
+    };
+
+    const decryptPassword = (pwd) => {
         setLoadingPasswords((prev) => ({
             ...prev,
-            [encryption.id]: true, // Set loading state
+            [pwd.id]: true, // set loading state of password matching the id to true
         }));
 
         Axios.post("http://localhost:5001/decryptpassword", {
-            password: encryption.password,
-            iv: encryption.iv,
+            password: pwd.password,
+            iv: pwd.iv,
         })
             .then((response) => {
                 setIsPasswordVisible((prev) => ({
                     ...prev,
-                    [encryption.id]: response.data, // Store decrypted password
+                    [pwd.id]: response.data, // store decrypted password
                 }));
 
                 setLoadingPasswords((prev) => ({
                     ...prev,
-                    [encryption.id]: false, // Remove loading state
+                    [pwd.id]: false, // remove loading state
                 }));
             })
             .catch(() => {
                 setLoadingPasswords((prev) => ({
                     ...prev,
-                    [encryption.id]: false, // Remove loading state on error
+                    [pwd.id]: false, // remove loading state on error
                 }));
             });
     };
@@ -82,7 +91,7 @@ function Dashboard() {
         } else {
             setIsPasswordVisible((prev) => ({
                 ...prev,
-                [pwd.id]: null, // Hide password on second click
+                [pwd.id]: null, // hide password on second click
             }));
         }
     };
@@ -138,18 +147,30 @@ function Dashboard() {
                         {loadingPasswords[pwd.id] ? (
                             <span>Loading...</span>
                         ) : isPasswordVisible[pwd.id] ? (
-                            isPasswordVisible[pwd.id]
+                            isPasswordVisible[pwd.id] // will show decrypted password if it exists
                         ) : (
                             "********"
                         )}
-                        <div
-                            onClick={() => togglePasswordVisibility(pwd)}
-                            style={{
-                                backgroundColor: "black",
-                                color: "white",
-                            }}
-                        >
-                            reveal
+                        <div className="actions" style={{ textAlign: "left" }}>
+                            <div
+                                onClick={() => togglePasswordVisibility(pwd)}
+                                style={{
+                                    backgroundColor: "black",
+                                    color: "white",
+                                }}
+                            >
+                                reveal
+                            </div>
+                            <div>edit</div>
+                            <div
+                                onClick={() => deletePassword(pwd.id)}
+                                style={{
+                                    backgroundColor: "black",
+                                    color: "white",
+                                }}
+                            >
+                                delete
+                            </div>
                         </div>
                     </div>
                 ))}

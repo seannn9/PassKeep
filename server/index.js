@@ -33,6 +33,24 @@ app.post("/addpassword", (req, res) => {
     );
 });
 
+app.post("/updatepassword", (req, res) => {
+    const { id } = req.body;
+
+    // code here
+});
+
+app.post("/deletepassword", (req, res) => {
+    const { id } = req.body;
+
+    db.query("DELETE FROM passwords WHERE id = ?", [id], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
 app.get("/showpasswords/:userId", (req, res) => {
     const userId = req.params.userId;
     db.query(
@@ -53,7 +71,6 @@ app.post("/decryptpassword", (req, res) => {
 });
 
 // LOGIN / REGISTER MASTER ACCOUNT
-
 app.post("/register", (req, res) => {
     const { email, password } = req.body;
     db.query(
