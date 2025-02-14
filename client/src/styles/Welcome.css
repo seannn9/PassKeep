@@ -32,6 +32,9 @@
 }
 
 .brand {
+    display: flex;
+    align-items: center;
+    gap: 5px;
     font-size: 1.5em;
     font-weight: 600;
 }
