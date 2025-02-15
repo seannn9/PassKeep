@@ -35,20 +35,40 @@ app.post("/addpassword", (req, res) => {
 
 app.post("/updatepassword", (req, res) => {
     const { id, website_name, email, password } = req.body;
-    const encryptedPass = encrypt(password);
 
-    db.query(
-        "UPDATE passwords SET password = ?, website_name = ?, email = ?, iv = ? WHERE id = ?",
-        [encryptedPass.password, website_name, email, encryptedPass.iv, id],
-        (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send("Error updating password");
-            } else {
-                res.send("Success");
-            }
+    // First get the existing password entry
+    db.query("SELECT * FROM passwords WHERE id = ?", [id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Error updating password");
+            return;
         }
-    );
+
+        const existingEntry = result[0];
+        let finalPassword = existingEntry.password;
+        let finalIv = existingEntry.iv;
+
+        // Only encrypt if the password is different from the stored encrypted version
+        if (password !== existingEntry.password) {
+            const encryptedPass = encrypt(password);
+            finalPassword = encryptedPass.password;
+            finalIv = encryptedPass.iv;
+        }
+
+        // Update the record
+        db.query(
+            "UPDATE passwords SET password = ?, iv = ?, website_name = ?, email = ? WHERE id = ?",
+            [finalPassword, finalIv, website_name, email, id],
+            (updateErr, updateResult) => {
+                if (updateErr) {
+                    console.log(updateErr);
+                    res.status(500).send("Error updating password");
+                } else {
+                    res.send("Success");
+                }
+            }
+        );
+    });
 });
 
 app.post("/deletepassword", (req, res) => {

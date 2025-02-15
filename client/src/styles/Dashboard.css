@@ -145,6 +145,7 @@
     width: 100%;
     background-color: #d9d9d9;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    height: 40px;
 }
 
 .delete-btn,
@@ -165,4 +166,61 @@
     position: absolute;
     top: 2em;
     cursor: pointer;
+}
+
+/* Add these new styles */
+.password-item input {
+    background-color: #d9d9d9;
+    border: none;
+    border-radius: 12px;
+    padding: 0.5em 1em;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.password-item input:focus {
+    background-color: #f0f0f0;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+/* Style specifically for website name input */
+.password-item input.website-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #0088ff;
+    background-color: transparent;
+    border-bottom: 2px solid #0088ff;
+    border-radius: 0;
+    padding: 0.25em 0;
+}
+
+.password-item input.website-name:focus {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+/* Update the email and password containers for edit mode */
+.email input,
+.password input {
+    background-color: white !important;
+    margin: 0;
+    box-shadow: none !important;
+    height: 100%;
+    font-size: 12px;
+    width: calc(100% - 20px);
+}
+
+.email input:focus,
+.password input:focus {
+    background-color: white !important;
+}
+
+.email div,
+.password div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }

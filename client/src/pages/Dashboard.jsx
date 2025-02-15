@@ -68,13 +68,23 @@ function Dashboard() {
             `#password-${pwd.id}`
         ).value;
 
+        let finalPassword = pwd.password;
+        if (updatedPassword !== "********") {
+            finalPassword = updatedPassword;
+        }
+
         Axios.post("http://localhost:5001/updatepassword", {
             id: pwd.id,
             website_name: updatedWebsite,
             email: updatedEmail,
-            password: updatedPassword,
+            password: finalPassword,
         }).then(() => {
             setEditingId(null);
+            // Clear the visible password when saving
+            setIsPasswordVisible((prev) => ({
+                ...prev,
+                [pwd.id]: null,
+            }));
             setRefresh(!refresh);
         });
     };
@@ -122,6 +132,30 @@ function Dashboard() {
     const handleLogout = () => {
         localStorage.clear(); // clear userId to logout
         navigate("/");
+    };
+
+    const handleEdit = async (pwd) => {
+        if (editingId === pwd.id) {
+            updatePassword(pwd);
+        } else {
+            // Decrypt the password before entering edit mode
+            try {
+                const response = await Axios.post(
+                    "http://localhost:5001/decryptpassword",
+                    {
+                        password: pwd.password,
+                        iv: pwd.iv,
+                    }
+                );
+                setIsPasswordVisible({
+                    ...isPasswordVisible,
+                    [pwd.id]: response.data,
+                });
+                setEditingId(pwd.id);
+            } catch (error) {
+                console.error("Error decrypting password:", error);
+            }
+        }
     };
 
     return (
@@ -235,10 +269,9 @@ function Dashboard() {
                                         {editingId === pwd.id ? (
                                             <input
                                                 id={`password-${pwd.id}`}
-                                                type="password"
+                                                type="text"
                                                 defaultValue={
-                                                    isPasswordVisible[pwd.id] ||
-                                                    pwd.password
+                                                    isPasswordVisible[pwd.id]
                                                 }
                                                 required
                                             />
@@ -266,13 +299,7 @@ function Dashboard() {
                                             />
                                         </div>
                                         <div
-                                            onClick={() => {
-                                                if (editingId === pwd.id) {
-                                                    updatePassword(pwd);
-                                                } else {
-                                                    setEditingId(pwd.id);
-                                                }
-                                            }}
+                                            onClick={() => handleEdit(pwd)}
                                             className="edit-btn"
                                         >
                                             <FontAwesomeIcon
