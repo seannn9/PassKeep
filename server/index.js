@@ -34,9 +34,21 @@ app.post("/addpassword", (req, res) => {
 });
 
 app.post("/updatepassword", (req, res) => {
-    const { id } = req.body;
+    const { id, website_name, email, password } = req.body;
+    const encryptedPass = encrypt(password);
 
-    // code here
+    db.query(
+        "UPDATE passwords SET password = ?, website_name = ?, email = ?, iv = ? WHERE id = ?",
+        [encryptedPass.password, website_name, email, encryptedPass.iv, id],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Error updating password");
+            } else {
+                res.send("Success");
+            }
+        }
+    );
 });
 
 app.post("/deletepassword", (req, res) => {
