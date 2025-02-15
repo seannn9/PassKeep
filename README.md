@@ -7,7 +7,6 @@ Tech Used:
 - React JS
 - MySQL
 - Node JS
-- Express
 
 Dependencies:
 - MySQL
