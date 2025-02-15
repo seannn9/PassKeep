@@ -1,6 +1,7 @@
 .main-container {
     display: flex;
     height: 100vh;
+    background-color: #f9f9f9;
 }
 
 .sidebar {
@@ -95,16 +96,16 @@
 .password-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    /* justify-content: center; */
     border-radius: 20px;
     height: 95%;
     overflow-y: scroll;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 4px inset;
+    /* box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 4px inset; */
     /* background-color: rgb(70, 70, 70); */
 }
 
 .password-item {
-    /* background-color: white; */
+    background-color: white;
     border-radius: 20px;
     display: flex;
     justify-content: space-around;

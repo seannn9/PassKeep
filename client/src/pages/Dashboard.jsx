@@ -166,59 +166,66 @@ function Dashboard() {
                 )}
                 <div className="passwords">
                     <h2 style={{ marginBottom: "5px" }}>Passwords</h2>
-                    <div
-                        className="password-list"
-                        style={{ textAlign: "left" }}
-                    >
-                        {passwordList.map((pwd, key) => (
-                            <div key={key} className="password-item">
-                                <h3 className="website-name">
-                                    {pwd.website_name}
-                                </h3>
-                                <div className="email">
-                                    <FontAwesomeIcon icon="fa-solid fa-envelope" />
-                                    <div style={{ overflow: "auto" }}>
-                                        {pwd.email}
+                    {passwordList.length === 0 && (
+                        <p style={{ marginTop: "20px" }}>No passwords yet.</p>
+                    )}
+                    {passwordList.length > 0 && (
+                        <div
+                            className="password-list"
+                            style={{ textAlign: "left" }}
+                        >
+                            {passwordList.map((pwd, key) => (
+                                <div key={key} className="password-item">
+                                    <h3 className="website-name">
+                                        {pwd.website_name}
+                                    </h3>
+                                    <div className="email">
+                                        <FontAwesomeIcon icon="fa-solid fa-envelope" />
+                                        <div style={{ overflow: "auto" }}>
+                                            {pwd.email}
+                                        </div>
                                     </div>
-                                </div>
-                                <div
-                                    className="password"
-                                    onClick={() =>
-                                        togglePasswordVisibility(pwd)
-                                    }
-                                >
-                                    <FontAwesomeIcon icon="fa-solid fa-key" />
-                                    {loadingPasswords[pwd.id] ? (
-                                        <span>Loading...</span>
-                                    ) : isPasswordVisible[pwd.id] ? (
-                                        isPasswordVisible[pwd.id] // will show decrypted password if it exists
-                                    ) : (
-                                        "********"
-                                    )}
-                                </div>
-                                <div
-                                    className="actions"
-                                    style={{ textAlign: "left" }}
-                                >
                                     <div
-                                        onClick={() => deletePassword(pwd.id)}
-                                        className="delete-btn"
+                                        className="password"
+                                        onClick={() =>
+                                            togglePasswordVisibility(pwd)
+                                        }
                                     >
-                                        <FontAwesomeIcon
-                                            icon="fa-solid fa-trash"
-                                            style={{ height: "20px" }}
-                                        />
+                                        <FontAwesomeIcon icon="fa-solid fa-key" />
+                                        {loadingPasswords[pwd.id] ? (
+                                            <span>Loading...</span>
+                                        ) : isPasswordVisible[pwd.id] ? (
+                                            isPasswordVisible[pwd.id] // will show decrypted password if it exists
+                                        ) : (
+                                            "********"
+                                        )}
                                     </div>
-                                    <div className="edit-btn">
-                                        <FontAwesomeIcon
-                                            icon="fa-solid fa-pen-to-square"
-                                            style={{ height: "20px" }}
-                                        />
+                                    <div
+                                        className="actions"
+                                        style={{ textAlign: "left" }}
+                                    >
+                                        <div
+                                            onClick={() =>
+                                                deletePassword(pwd.id)
+                                            }
+                                            className="delete-btn"
+                                        >
+                                            <FontAwesomeIcon
+                                                icon="fa-solid fa-trash"
+                                                style={{ height: "20px" }}
+                                            />
+                                        </div>
+                                        <div className="edit-btn">
+                                            <FontAwesomeIcon
+                                                icon="fa-solid fa-pen-to-square"
+                                                style={{ height: "20px" }}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
