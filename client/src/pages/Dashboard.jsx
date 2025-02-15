@@ -14,7 +14,7 @@ function Dashboard() {
     const [isPasswordVisible, setIsPasswordVisible] = useState({});
     const [loadingPasswords, setLoadingPasswords] = useState({});
     const [isAdding, setIsAdding] = useState(false);
-    const [isUpdating, setIsUpdating] = useState(false);
+    const [editingId, setEditingId] = useState(null);
 
     const navigate = useNavigate();
 
@@ -55,6 +55,26 @@ function Dashboard() {
         Axios.post("http://localhost:5001/deletepassword", {
             id: id,
         }).then(() => {
+            setRefresh(!refresh);
+        });
+    };
+
+    const updatePassword = (pwd) => {
+        const updatedWebsite = document.querySelector(
+            `#website-${pwd.id}`
+        ).value;
+        const updatedEmail = document.querySelector(`#email-${pwd.id}`).value;
+        const updatedPassword = document.querySelector(
+            `#password-${pwd.id}`
+        ).value;
+
+        Axios.post("http://localhost:5001/updatepassword", {
+            id: pwd.id,
+            website_name: updatedWebsite,
+            email: updatedEmail,
+            password: updatedPassword,
+        }).then(() => {
+            setEditingId(null);
             setRefresh(!refresh);
         });
     };
@@ -176,26 +196,56 @@ function Dashboard() {
                         >
                             {passwordList.map((pwd, key) => (
                                 <div key={key} className="password-item">
-                                    <h3 className="website-name">
-                                        {pwd.website_name}
-                                    </h3>
+                                    {editingId === pwd.id ? (
+                                        <input
+                                            id={`website-${pwd.id}`}
+                                            className="website-name"
+                                            defaultValue={pwd.website_name}
+                                            type="text"
+                                            required
+                                        />
+                                    ) : (
+                                        <h3 className="website-name">
+                                            {pwd.website_name}
+                                        </h3>
+                                    )}
                                     <div className="email">
                                         <FontAwesomeIcon icon="fa-solid fa-envelope" />
                                         <div style={{ overflow: "auto" }}>
-                                            {pwd.email}
+                                            {editingId === pwd.id ? (
+                                                <input
+                                                    id={`email-${pwd.id}`}
+                                                    defaultValue={pwd.email}
+                                                    type="email"
+                                                    required
+                                                />
+                                            ) : (
+                                                pwd.email
+                                            )}
                                         </div>
                                     </div>
                                     <div
                                         className="password"
                                         onClick={() =>
+                                            editingId !== pwd.id &&
                                             togglePasswordVisibility(pwd)
                                         }
                                     >
                                         <FontAwesomeIcon icon="fa-solid fa-key" />
-                                        {loadingPasswords[pwd.id] ? (
+                                        {editingId === pwd.id ? (
+                                            <input
+                                                id={`password-${pwd.id}`}
+                                                type="password"
+                                                defaultValue={
+                                                    isPasswordVisible[pwd.id] ||
+                                                    pwd.password
+                                                }
+                                                required
+                                            />
+                                        ) : loadingPasswords[pwd.id] ? (
                                             <span>Loading...</span>
                                         ) : isPasswordVisible[pwd.id] ? (
-                                            isPasswordVisible[pwd.id] // will show decrypted password if it exists
+                                            isPasswordVisible[pwd.id]
                                         ) : (
                                             "********"
                                         )}
@@ -215,9 +265,22 @@ function Dashboard() {
                                                 style={{ height: "20px" }}
                                             />
                                         </div>
-                                        <div className="edit-btn">
+                                        <div
+                                            onClick={() => {
+                                                if (editingId === pwd.id) {
+                                                    updatePassword(pwd);
+                                                } else {
+                                                    setEditingId(pwd.id);
+                                                }
+                                            }}
+                                            className="edit-btn"
+                                        >
                                             <FontAwesomeIcon
-                                                icon="fa-solid fa-pen-to-square"
+                                                icon={
+                                                    editingId === pwd.id
+                                                        ? "fa-solid fa-save"
+                                                        : "fa-solid fa-pen-to-square"
+                                                }
                                                 style={{ height: "20px" }}
                                             />
                                         </div>
